@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Therapist Dashboard - RehabSync</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Therapist Dashboard</h1>
+    <p>Upload rehabilitation videos for patients</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Upload Exercise Video</h2>
+
+      <form id="uploadForm">
+        <label for="exerciseTitle">Exercise Title</label>
+        <input
+          type="text"
+          id="exerciseTitle"
+          placeholder="e.g. Knee Flexion Exercise"
+          required
+        />
+
+        <label for="patientId">Patient ID</label>
+        <input
+          type="text"
+          id="patientId"
+          placeholder="e.g. P102"
+          required
+        />
+
+        <label for="videoFile">Choose Video</label>
+        <input
+          type="file"
+          id="videoFile"
+          accept="video/*"
+          required
+        />
+
+        <button type="submit" class="btn">Upload Video</button>
+      </form>
+
+      <p id="uploadMessage" class="status-text"></p>
+    </section>
+
+    <section class="card">
+      <a class="back-btn" href="index.html">← Back to Home</a>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+<nav class="navbar">
+  <div class="nav-container">
+    <h2 class="logo">RehabSync</h2>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="therapist.html">Therapist</a>
+      <a href="patient.html">Patient</a>
+    </div>
+  </div>
+</nav>
+</html>

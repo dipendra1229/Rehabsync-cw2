@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Dashboard - RehabSync</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <h2 class="logo">RehabSync</h2>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="therapist.html">Therapist</a>
+        <a href="patient.html">Patient</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <h1>Patient Dashboard</h1>
+    <p>Track rehabilitation progress and view assigned exercise videos</p>
+  </header>
+
+  <main class="container two-column">
+    <section class="card">
+      <h2 id="formTitle">Add Recovery Log</h2>
+
+      <form id="recoveryForm">
+        <input type="hidden" id="logId" />
+
+        <label for="recoveryPatientId">Patient ID</label>
+        <input type="text" id="recoveryPatientId" placeholder="e.g. P102" required />
+
+        <label for="date">Date</label>
+        <input type="date" id="date" required />
+
+        <label for="painLevel">Pain Level (1 to 10)</label>
+        <input type="number" id="painLevel" min="1" max="10" required />
+
+        <label for="mobilityScore">Mobility Score (0 to 100)</label>
+        <input type="number" id="mobilityScore" min="0" max="100" required />
+
+        <label for="notes">Notes</label>
+        <textarea id="notes" placeholder="Write recovery notes..." required></textarea>
+
+        <div class="button-group">
+          <button type="submit" class="btn" id="saveBtn">Save Recovery Log</button>
+          <button type="button" class="btn secondary" id="cancelEditBtn" style="display: none;">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+
+      <p id="recoveryMessage" class="status-text"></p>
+    </section>
+
+    <section class="card">
+      <h2>Find Recovery Logs</h2>
+
+      <div class="inline-group">
+        <input type="text" id="searchPatientId" placeholder="Enter patient ID" />
+        <button class="btn" id="loadLogsBtn">Load Logs</button>
+      </div>
+
+      <div id="logsContainer" class="logs-list"></div>
+    </section>
+  </main>
+
+  <main class="container">
+    <section class="card">
+      <h2>Assigned Exercise Videos</h2>
+
+      <div class="inline-group">
+        <input type="text" id="videoPatientId" placeholder="Enter patient ID" />
+        <button class="btn" id="loadVideosBtn">Load Videos</button>
+      </div>
+
+      <div id="videosContainer" class="logs-list"></div>
+    </section>
+
+    <a class="back-btn" href="index.html">← Back to Home</a>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

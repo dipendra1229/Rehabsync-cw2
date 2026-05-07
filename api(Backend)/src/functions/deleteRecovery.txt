@@ -1,0 +1,43 @@
+const { app } = require('@azure/functions');
+const { CosmosClient } = require("@azure/cosmos");
+
+app.http('deleteRecovery', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: 'recovery/{id}',
+    handler: async (request, context) => {
+
+        const id = request.params.id;
+
+        const client = new CosmosClient({
+            endpoint: process.env.COSMOS_ENDPOINT,
+            key: process.env.COSMOS_KEY
+        });
+
+        const container = client
+            .database(process.env.COSMOS_DATABASE_NAME)
+            .container(process.env.COSMOS_CONTAINER_NAME);
+
+        try {
+            const querySpec = {
+                query: "SELECT * FROM c WHERE c.id = @id",
+                parameters: [{ name: "@id", value: id }]
+            };
+
+            const { resources } = await container.items.query(querySpec).fetchAll();
+
+            if (!resources.length) {
+                return { status: 404, jsonBody: { error: "Not found" } };
+            }
+
+            const item = resources[0];
+
+            await container.item(id, item.patientId).delete();
+
+            return { status: 200, jsonBody: { message: "Deleted" } };
+
+        } catch (err) {
+            return { status: 500, jsonBody: { error: err.message } };
+        }
+    }
+});
