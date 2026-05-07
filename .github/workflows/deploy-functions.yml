@@ -32,7 +32,7 @@ jobs:
       - name: Zip deployment package
         run: |
           cd "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
-          zip -r ../../func-deploy.zip . \
+          zip -r ../func-deploy.zip . \
             -x "local.settings.json" \
             -x ".git/*" \
             -x "node_modules/azure-functions-core-tools/*" \
