@@ -4,18 +4,19 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_NAME: rehabsync-functions-thakuri123
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './api(Backend)'
-  NODE_VERSION: '20.x'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "api(Backend)"
+  NODE_VERSION: "20.x"
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout GitHub Action
+      - name: Checkout source code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -23,10 +24,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install dependencies
-        run: |
-          cd "api(Backend)"
-          npm install
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
 
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
