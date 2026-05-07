@@ -7,30 +7,43 @@ on:
   workflow_dispatch:
 
 env:
+  NODE_VERSION: "20.x"
   AZURE_FUNCTIONAPP_NAME: rehabsync-functions-thakuri123
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "api(Backend)"
-  NODE_VERSION: "20.x"
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install backend dependencies
-        run: npm ci
-        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      - name: Install production dependencies
+        run: |
+          cd "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
+          npm ci --omit=dev
+
+      - name: Zip deployment package
+        run: |
+          cd "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
+          zip -r ../../func-deploy.zip . \
+            -x "local.settings.json" \
+            -x ".git/*" \
+            -x "node_modules/azure-functions-core-tools/*" \
+            -x "node_modules/@types/*" \
+            -x "node_modules/typescript/*"
 
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          package: ./func-deploy.zip
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          scm-do-build-during-deployment: false
+          enable-oryx-build: false
