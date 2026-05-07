@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  AZURE_FUNCTIONAPP_NAME: rehabsync-api-thakuri123
+  AZURE_FUNCTIONAPP_NAME: rehabsync-functions-thakuri123
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './api(Backend)'
   NODE_VERSION: '20.x'
 
